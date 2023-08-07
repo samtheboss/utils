@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import tornadofx.control.DateTimePicker?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="471.0" minWidth="751.0" stylesheets="@../apis/stock/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox spacing="5.0">
+         <children>
+            <ComboBox fx:id="ch_locations" minWidth="150.0" promptText="LOCATIIONS" />
+            <Label minWidth="70.0" prefHeight="26.0" prefWidth="70.0" styleClass="text" text="START DATE" />
+            <DateTimePicker fx:id="startdate" disable="true" editable="false" />
+            <Label layoutX="10.0" layoutY="10.0" minWidth="60.0" prefHeight="24.0" prefWidth="56.0" styleClass="text" text="END DATE" />
+            <DateTimePicker fx:id="enddate" disable="true" editable="false" layoutX="76.0" layoutY="10.0" />
+            <JFXButton fx:id="btn_createshift" minWidth="100.0" styleClass="btn" text="CREATE DAY" />
+            <JFXButton fx:id="btn_close_shift" layoutX="570.0" layoutY="10.0" minWidth="100.0" styleClass="btn" text="CLOSE DAY" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="tc_serial_number" prefWidth="100.0" text="SERIAL NUMBER" />
+            <TableColumn fx:id="tc_fiscal_day" prefWidth="75.0" text="FISCAL DAY" />
+            <TableColumn fx:id="tc_fiscal_month" prefWidth="90.33331298828125" text="FISCAL_MONTH" />
+            <TableColumn fx:id="tc_started_by" prefWidth="104.66668701171875" text="STARTED BY" />
+            <TableColumn fx:id="tc_start_date" prefWidth="193.33334350585938" text="START DATE" />
+            <TableColumn fx:id="tc_closed_by" prefWidth="103.6666259765625" text="CLOSED BY" />
+            <TableColumn fx:id="tb_close_date" prefWidth="120.66665649414062" text="CLOSE DATE" />
+            <TableColumn fx:id="tc_active_shifts" prefWidth="94.3333740234375" text="ACTIVE SHIFTS" />
+            <TableColumn fx:id="tc_status" prefWidth="51.6666259765625" text="STATUS" />
+         </columns>
+      </TableView>
+   </children>
+</VBox>

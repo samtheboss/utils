@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="1050.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="border">
+               <children>
+                  <Label maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="37.0" text="Date:" />
+                  <Label layoutX="10.0" layoutY="40.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" text="From">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </Label>
+                  <DatePicker fx:id="from_date_picker" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="25.0" prefHeight="30.0" HBox.hgrow="ALWAYS" />
+                  <Label layoutX="10.0" layoutY="40.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="24.0" text="To">
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <DatePicker fx:id="to_date_picker" layoutX="85.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="25.0" prefHeight="30.0" HBox.hgrow="ALWAYS" />
+                  <Label layoutX="47.0" layoutY="15.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" text="Location">
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </Label>
+                  <ComboBox fx:id="location_combobox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="25.0" prefHeight="30.0" prefWidth="150.0" promptText="ALL LOCATIONS" styleClass="btn" HBox.hgrow="ALWAYS" />
+                  <RadioButton fx:id="audited_radio_button" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" text="Audited">
+                     <padding>
+                        <Insets left="3.0" right="3.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="3.0" right="2.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="not_audited_radio_button" layoutX="727.0" layoutY="22.0" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" text="Not Audited">
+                     <padding>
+                        <Insets left="3.0" right="3.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="3.0" right="2.0" />
+                     </HBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="all_audits_radio_button" layoutX="945.0" layoutY="15.0" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" text="All">
+                     <padding>
+                        <Insets left="3.0" right="3.0" />
+                     </padding>
+                  </RadioButton>
+                  <Button maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#refreshContent" prefHeight="30.0" text="Refresh">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                     <styleClass>
+                        <String fx:value="border" />
+                        <String fx:value="btn" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btn_export" layoutX="957.0" layoutY="11.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" text="EXPORT ">
+                     <styleClass>
+                        <String fx:value="border" />
+                        <String fx:value="btn" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="40.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="BOTTOM" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" text="Search:">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="searchTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="30.0" prefWidth="120.0" styleClass="text" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" top="15.0" />
+         </padding>
+      </VBox>
+      <StackPane fx:id="main_page_pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <children>
+            <TableView fx:id="table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" StackPane.alignment="TOP_CENTER">
+              <columns>
+                <TableColumn fx:id="transaction_date_column" maxWidth="150.0" minWidth="120.0" prefWidth="120.0" resizable="false" text="Transaction Date" />
+                  <TableColumn fx:id="item_name_column" maxWidth="278.3333435058594" minWidth="120.0" prefWidth="278.3333435058594" resizable="false" text="Item Name" />
+                  <TableColumn fx:id="order_type_column" maxWidth="160.0" minWidth="58.66668701171875" prefWidth="90.66665649414062" resizable="false" text="Order Type" />
+                  <TableColumn fx:id="order_number_column" maxWidth="173.66665649414062" minWidth="55.33331298828125" prefWidth="100.0" resizable="false" text="Order Number" />
+                  <TableColumn fx:id="approved_by_column" editable="false" maxWidth="188.66668701171875" minWidth="84.33334350585938" prefWidth="84.33334350585938" resizable="false" text="Approved By" />
+                  <TableColumn fx:id="location_column" editable="false" maxWidth="188.66668701171875" minWidth="120.0" prefWidth="120.33331298828125" resizable="false" text="Location" />
+                  <TableColumn fx:id="qty_transacted_column" maxWidth="181.33331298828125" minWidth="113.33331298828125" prefWidth="113.33331298828125" resizable="false" text="Quantity" />
+                  <TableColumn fx:id="suom_column" maxWidth="150.0" minWidth="58.66668701171875" prefWidth="58.66668701171875" resizable="false" text="SUOM" />
+                  <TableColumn fx:id="audited_column" maxWidth="150.0" minWidth="120.0" prefWidth="-1.0" resizable="false" text="Audited" />
+                  <TableColumn fx:id="audited_by_column" maxWidth="150.0" minWidth="120.0" prefWidth="120.0" resizable="false" text="Audited By" />
+                  <TableColumn fx:id="date_audited_column" maxWidth="150.0" minWidth="120.0" prefWidth="-1.0" resizable="false" text="Date Audited" />
+              </columns>
+            </TableView>
+         </children>
+      </StackPane>
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Hyperlink fx:id="go_to_start_page_btn" text="&lt;&lt;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Hyperlink>
+            <Hyperlink fx:id="go_to_previous_page_btn" layoutX="488.0" layoutY="15.0" text="&lt;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Hyperlink>
+            <Label fx:id="current_page_label" text="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Hyperlink fx:id="go_to_next_page_btn" layoutX="563.0" layoutY="15.0" text="&gt;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Hyperlink>
+         </children>
+      </HBox>
+      <HBox fx:id="progressHbox" maxHeight="0.0">
+         <children>
+            <ProgressBar fx:id="progressbar" maxWidth="1.7976931348623157E308" prefHeight="10.0" progress="0.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="progressInfoLabel" maxHeight="10.0" prefHeight="10.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" />
+   </padding>
+</VBox>

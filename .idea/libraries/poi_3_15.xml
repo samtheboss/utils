@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="poi-3.15">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../lib/poi-3.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../lib/poi-excelant-3.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../lib/poi-ooxml-3.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../lib/poi-ooxml-schemas-3.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../lib/poi-scratchpad-3.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../lib/pop3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../lib/tornadofx-controls-1.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
