@@ -22,7 +22,7 @@ public class utills {
 
     public String safeSQL(String str) {
 
-        if (str.isEmpty() || str == null) {
+        if (str.isEmpty()) {
             return "";
         } else {
             str = str.replace("'", "''");
@@ -103,7 +103,7 @@ public class utills {
         return sqlBuilder.toString();
     }
 
-    public static String genUpdateSQL(Object object, List<WhereBy> clauses, String table) throws Exception {
+    public static String genUpdateSQL(Object object, List<WhereBy> clauses, String table)  {
         if (object == null) {
             return null;
         }
@@ -112,7 +112,12 @@ public class utills {
         for (Field f : object.getClass().getDeclaredFields()) {
             f.setAccessible(true);
             String col = f.getName();
-            Object val = f.get(object);
+            Object val = null;
+            try {
+                val = f.get(object);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             if (Objects.isNull(val)) {
                 continue;
             }
@@ -129,43 +134,7 @@ public class utills {
         }
         StringBuilder sql = new StringBuilder("UPDATE " + table + " SET " + sb);
 
-        if (clauses != null && !clauses.isEmpty()) {
-            sql.append(" WHERE");
-            int i = 0;
-            for (WhereBy whereBy : clauses) {
-                if (i > 0) {
-                    sql.append(" AND");
-                }
-                sql.append(" ").append(whereBy.column);
-                Object value = whereBy.value;
-                if (null == whereBy.equate) {
-                    sql.append(" ").append(" <> ").append(dbArg(value));
-                } else {
-                    switch (whereBy.equate) {
-                        case EQUALS:
-                            sql.append(" = ").append(dbArg(value));
-                            break;
-                        case GREATER_THAN:
-                            sql.append(" > ").append(dbArg(value));
-                            break;
-                        case LESS_THAN:
-                            sql.append(" < ").append(dbArg(value));
-                            break;
-                        case LIKE:
-                            sql.append(" LIKE '%").append(escape(Objects.toString(value))).append("%'");
-                            break;
-                        case BETWEEN:
-                            List<Object> l = new ArrayList<>((List<Object>) value);
-                            sql.append(" BETWEEN ").append(dbArg(l.get(0))).append(" AND ").append(dbArg(l.get(1)));
-                            return sql.toString();
-                        default:
-                            sql.append(" ").append(" <> ").append(dbArg(value));
-                            break;
-                    }
-                }
-                i++;
-            }
-        }
+     sql.append(whereClauses(clauses));
 
         return sql.toString();
     }
@@ -285,6 +254,14 @@ public class utills {
         String columns = String.join(", ", cols);
         sql.append("SELECT ").append(columns).append(" FROM ").append(tableName);
 
+       sql.append(whereClauses(clauses));
+
+        return sql.toString();
+    }
+
+
+    public static StringBuilder whereClauses(List<WhereBy> clauses){
+        StringBuilder sql= new StringBuilder("");
         if (clauses != null && !clauses.isEmpty()) {
             sql.append(" WHERE");
             int i = 0;
@@ -313,7 +290,7 @@ public class utills {
                         case BETWEEN:
                             List<Object> l = new ArrayList<>((List<Object>) value);
                             sql.append(" BETWEEN ").append(dbArg(l.get(0))).append(" AND ").append(dbArg(l.get(1)));
-                            return sql.toString();
+                            break;
                         default:
                             sql.append(" ").append(" <> ").append(dbArg(value));
                             break;
@@ -322,7 +299,6 @@ public class utills {
                 i++;
             }
         }
-
-        return sql.toString();
+        return sql;
     }
 }
