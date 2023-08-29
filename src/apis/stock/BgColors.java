@@ -72,11 +72,11 @@ public class BgColors implements Serializable
         Double red = color.getRed() * 255;
         int redInt = red.intValue();
 
-        Double green = color.getGreen() * 255;
-        int greenInt = green.intValue();
+        double green = color.getGreen() * 255;
+        int greenInt = (int) green;
 
-        Double blue = color.getBlue() * 255;
-        int blackInt = blue.intValue();
+        double blue = color.getBlue() * 255;
+        int blackInt = (int) blue;
 
         String hex = String.format("#%02X%02X%02X", redInt, greenInt, blackInt);
 //		String hex = "#" + Integer.toHexString(redInt) + Integer.toHexString(greenInt) + Integer.toHexString(blackInt);

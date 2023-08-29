@@ -5,9 +5,8 @@
  */
 package apis;
 
+import Swifts.ShiftConntroller;
 import Swifts.BusinessDaysController;
-import apis.stock.StockLedgerController;
-import apis.stock.StockReportsController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +14,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -41,7 +39,7 @@ public class Apis extends Application {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(
                     "/Swifts/BusinessDays.fxml"
             ));
-            loader.setController(new BusinessDaysController());
+      loader.setController(new BusinessDaysController());
             Parent parent = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setScene(new Scene(parent));

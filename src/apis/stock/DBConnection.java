@@ -29,24 +29,24 @@ public class DBConnection {
 
     String url, user, pass, database;
 
-    public Connection connection() {
-
-        url = "jdbc:db2://localhost:50000/lubes";
-        user = "maliplus";
-        pass = "Boss@3318";
-        try {
-            Class.forName("com.ibm.db2.jcc.DB2Driver");
-            conn = DriverManager.getConnection(url, user, pass);
-            System.out.println("Connection successful");
-            return conn;
-        } catch (ClassNotFoundException | SQLException ex) {
-//        ProgressDialog pd = new ProgressDialog();
-            //   pd.close();
-            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-
-    }
+//    public Connection connection() {
+//
+//        url = "jdbc:db2://localhost:50000/lubes";
+//        user = "maliplus";
+//        pass = "Boss@3318";
+//        try {
+//            Class.forName("com.ibm.db2.jcc.DB2Driver");
+//            conn = DriverManager.getConnection(url, user, pass);
+//            System.out.println("Connection successful");
+//            return conn;
+//        } catch (ClassNotFoundException | SQLException ex) {
+////        ProgressDialog pd = new ProgressDialog();
+//            //   pd.close();
+//            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+//            return null;
+//        }
+//
+//    }
 
     public Connection getConnection() {
         if (conn != null) {
@@ -77,7 +77,7 @@ public class DBConnection {
 
     public Object singleValue(String sql) {
         Object name = "";
-        Connection dbCon = new DBConnection().connection();
+        Connection dbCon = new DBConnection().getConnection();
         try {
             PreparedStatement pst = dbCon.prepareStatement(sql);
             ResultSet result = pst.executeQuery();
@@ -94,7 +94,7 @@ public class DBConnection {
         Map<String, Object> res = new HashMap<>();
         try {
             if (conn == null) {
-                conn = new DBConnection().connection();
+                conn = new DBConnection().getConnection();
             }
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
@@ -112,17 +112,44 @@ public class DBConnection {
         }
         return res;
     }
+    public List<Map<String, Object>> multipleValues(String sql) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
 
-    public List<Object> listOfData(String sql) {
-        List<Object> resultList = new ArrayList<>();
+        try {
+            if (conn == null) {
+                conn = new DBConnection().getConnection();
+            }
 
-        try (Connection con = new DBConnection().connection();
-                PreparedStatement pst = con.prepareStatement(sql);
-                ResultSet rs = pst.executeQuery()) {
-
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             int cols = rsmd.getColumnCount();
 
+            while (rs.next()) {
+                Map<String, Object> rowMap = new HashMap<>();
+
+                for (int i = 1; i <= cols; i++) {
+                    String colName = rsmd.getColumnLabel(i).toUpperCase();
+                    Object val = rs.getObject(i);
+                    rowMap.put(colName, val);
+                }
+
+                resultList.add(rowMap);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return resultList;
+    }
+    public List<Object> listOfData(String sql) {
+        List<Object> resultList = new ArrayList<>();
+        try (Connection con = new DBConnection().getConnection();
+                PreparedStatement pst = con.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery()) {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int cols = rsmd.getColumnCount();
             while (rs.next()) {
                 List<Object> rowList = new ArrayList<>();
                 for (int i = 1; i <= cols; i++) {
@@ -141,7 +168,7 @@ public class DBConnection {
     public static void updateData(String sql) {
 
         try {
-            Connection connection = new DBConnection().connection();
+            Connection connection = new DBConnection().getConnection();
             Statement statement = connection.createStatement();
             int rowsAffected = statement.executeUpdate(sql);
             System.out.println("Update successful. " + rowsAffected + " rows affected.");
@@ -149,5 +176,20 @@ public class DBConnection {
             System.out.println(e.getLocalizedMessage()); 
         }
 
+    }
+    public static void updateData(String sql, Object... params) {
+        try {
+            Connection connection = new DBConnection().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Update successful. " + rowsAffected + " rows affected.");
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
     }
 }

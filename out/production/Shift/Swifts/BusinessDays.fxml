@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -10,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import tornadofx.control.DateTimePicker?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="471.0" minWidth="751.0" stylesheets="@../apis/stock/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="471.0" minWidth="751.0" spacing="5.0" stylesheets="@../apis/stock/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox spacing="5.0">
          <children>
@@ -26,6 +28,17 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </HBox>
+      <HBox prefHeight="32.0" prefWidth="1009.0" spacing="5.0">
+         <children>
+            <JFXCheckBox fx:id="ch_opened" text="OPEN" />
+            <JFXCheckBox fx:id="chk_closed" layoutX="10.0" layoutY="10.0" text="CLOSED" />
+            <JFXTextField fx:id="txt_filter" minWidth="300.0" HBox.hgrow="NEVER" />
+            <JFXButton fx:id="btn_search" prefHeight="25.0" prefWidth="105.0" styleClass="btn" text="SEARCH" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
       <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <columns>
             <TableColumn fx:id="tc_serial_number" prefWidth="100.0" text="SERIAL NUMBER" />
@@ -38,6 +51,12 @@
             <TableColumn fx:id="tc_active_shifts" prefWidth="94.3333740234375" text="ACTIVE SHIFTS" />
             <TableColumn fx:id="tc_status" prefWidth="51.6666259765625" text="STATUS" />
          </columns>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
       </TableView>
    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </VBox>

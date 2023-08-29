@@ -7,10 +7,14 @@ package Swifts;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import java.sql.Connection;
 import java.util.ResourceBundle;
+
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,7 +37,7 @@ import javafx.scene.control.ComboBox;
 public class BusinessDaysController implements Initializable {
 
   DBConnection dbUtils = new DBConnection();
-  utills utill = new utills();
+  utils utill = new utils();
   Connection conn;
   String username = "SMARTAPPS";
 
@@ -67,19 +71,27 @@ public class BusinessDaysController implements Initializable {
 
   @FXML private TableColumn<BusinessModel, String> tc_status;
 
+  @FXML private JFXCheckBox ch_opened;
+
+  @FXML private JFXCheckBox chk_closed;
+
+  @FXML private JFXTextField txt_filter;
+
+  @FXML private JFXButton btn_search;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    intialTable();
+    initTable();
     setListeners();
   }
 
   public void checkOpenOrders(String tables) {
-    List<utills.WhereBy> wheres = new ArrayList<>();
-    wheres.add(new utills.WhereBy("order_status", "ACT", utills.Equate.EQUALS));
-    String openCash_orders = utills.generateSelectSQL(wheres, tables, "COUNT");
+    List<utils.WhereBy> wheres = new ArrayList<>();
+    wheres.add(new utils.WhereBy("ORDER_STATUS", "ACT"));
+    String openCash_orders = utils.generateSelectSQL(wheres, tables, "COUNT");
     int orderCount = (int) dbUtils.singleValue(openCash_orders);
     if (orderCount > 0) {
-      utill.Notifaction("Failed", "You have " + orderCount + " open orders ", "error");
+      utill.Notification("Failed", "You have " + orderCount + " open orders ", "error");
     } else {
       closeDay();
     }
@@ -91,12 +103,12 @@ public class BusinessDaysController implements Initializable {
     int fiscalMonth = startdate.getDateTimeValue().getMonth().getValue();
     int fiscalYear = startdate.getDateTimeValue().getYear();
     LocalDateTime localDateTime = startdate.getDateTimeValue();
-       String status = "OPN";
+    String status = "OPN";
     String location = "";
-    if (ch_locations.getSelectionModel().getSelectedItem() != null ) {
+    if (ch_locations.getSelectionModel().getSelectedItem() != null) {
       location = ch_locations.getSelectionModel().getSelectedItem();
     } else {
-      utill.Notifaction("Failed", "Location is Required", "error");
+      utill.Notification("Failed", "Location is Required", "error");
     }
     model.setFiscalDay(fiscalDate);
     model.setFiscalMonth(fiscalMonth);
@@ -107,20 +119,20 @@ public class BusinessDaysController implements Initializable {
     model.setLocation(location);
     model.setDescription("test");
     String insertSql = "";
-    insertSql = utills.generateInsertSQL(model, "BUSINESS_DAYS");
-    utills.systemOut(insertSql);
-    List<utills.WhereBy> wheres = new ArrayList<>();
-    wheres.add(new utills.WhereBy("status", "OPN", utills.Equate.EQUALS));
-    String openBusinessDays = utills.generateSelectSQL(wheres, "BUSINESS_DAYS", "COUNT");
-    utills.systemOut(openBusinessDays);
+    insertSql = utils.generateInsertSQL(model, "BUSINESS_DAYS");
+    utils.systemOut(insertSql);
+    List<utils.WhereBy> wheres = new ArrayList<>();
+    wheres.add(new utils.WhereBy("status", "OPN"));
+    String openBusinessDays = utils.generateSelectSQL(wheres, "BUSINESS_DAYS", "COUNT");
+    utils.systemOut(openBusinessDays);
     int count = (int) dbUtils.singleValue(openBusinessDays);
     if (count >= 1) {
-      utill.Notifaction("Failed", "Close Already opened Day to continue", "error");
-      intialTable();
+      utill.Notification("Failed", "Close Already opened Day to continue", "error");
+      initTable();
     } else {
       DBConnection.updateData(insertSql);
-      intialTable();
-      utill.Notifaction("Success", "Day Created successful", "");
+      initTable();
+      utill.Notification("Success", "Day Created successful", "");
     }
   }
 
@@ -133,21 +145,21 @@ public class BusinessDaysController implements Initializable {
       model.setClosed_By(username);
       model.setStatus("CSD");
       model.setDate_Closed(endDateTimestamp);
-      List<utills.WhereBy> updateWheres = new ArrayList<>();
-      List<utills.WhereBy> selectWhere = new ArrayList<>();
+      List<utils.WhereBy> updateWheres = new ArrayList<>();
+      List<utils.WhereBy> selectWhere = new ArrayList<>();
 
-      updateWheres.add(new utills.WhereBy("STATUS", "OPN", utills.Equate.EQUALS));
-      String update = utills.genUpdateSQL(model, updateWheres, "BUSINESS_DAYS");
-      String ifExistOpenDAy = utills.generateSelectSQL(updateWheres, "BUSINESS_DAYS", "COUNT");
+      updateWheres.add(new utils.WhereBy("STATUS", "OPN"));
+      String update = utils.genUpdateSQL(model, updateWheres, "BUSINESS_DAYS");
+      String ifExistOpenDAy = utils.generateSelectSQL(updateWheres, "BUSINESS_DAYS", "COUNT");
       int count = (int) dbUtils.singleValue(ifExistOpenDAy);
       if (count >= 1) {
 
         DBConnection.updateData(update);
-        intialTable();
+        initTable();
         // addBusinessDay();
       } else {
-        utill.Notifaction("Failed", "No Open day", "error");
-        intialTable();
+        utill.Notification("Failed", "No Open day", "error");
+        initTable();
       }
 
     } catch (Exception ex) {
@@ -155,13 +167,18 @@ public class BusinessDaysController implements Initializable {
     }
   }
 
-  public void setListeners() {
-    List<String> modifiedList =
-        dbUtils.listOfData("select main_location from Locations ").stream()
-            .map(Object::toString)
-            .map(element -> element.replaceAll("[\\[\\]]", ""))
+  public void setCombox() {
+    String sql = "SELECT main_location FROM Locations";
+    List<Map<String, Object>> dataList = dbUtils.multipleValues(sql);
+    List<String> locations =
+        dataList.stream()
+            .map(rowMap -> (String) rowMap.get("MAIN_LOCATION"))
             .collect(Collectors.toList());
-    ch_locations.getItems().addAll(modifiedList);
+    ch_locations.getItems().addAll(locations);
+  }
+
+  public void setListeners() {
+    setCombox();
 
     btn_createshift.setOnAction(
         e -> {
@@ -172,13 +189,22 @@ public class BusinessDaysController implements Initializable {
           checkOpenOrders("CASH_ORDERS");
         });
     getOpenDatetime();
+
+    txt_filter.focusedProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue) {
+        System.out.println("TextField gained focus");
+      } else {
+        System.out.println("TextField lost focus");
+      }
+    });
+
   }
 
   void getOpenDatetime() {
     Timestamp openStartTime;
-    List<utills.WhereBy> wheres = new ArrayList<>();
-    wheres.add(new utills.WhereBy("STATUS", "OPN", utills.Equate.EQUALS));
-    String sql = utills.generateSelectSQL(wheres, "BUSINESS_DAYS", "DATE_STARTED");
+    List<utils.WhereBy> wheres = new ArrayList<>();
+    wheres.add(new utils.WhereBy("STATUS", "OPN"));
+    String sql = utils.generateSelectSQL(wheres, "BUSINESS_DAYS", "DATE_STARTED");
 
     String time = String.valueOf(dbUtils.singleValue(sql));
     if (time.isEmpty()) {
@@ -186,8 +212,6 @@ public class BusinessDaysController implements Initializable {
     } else {
       openStartTime = Timestamp.valueOf(time);
     }
-    System.out.println("time " + time);
-
     LocalDateTime startDateTime = openStartTime.toLocalDateTime();
     LocalDateTime eDateTime = LocalDateTime.now();
 
@@ -195,8 +219,8 @@ public class BusinessDaysController implements Initializable {
     startdate.setDateTimeValue(startDateTime);
   }
 
-  public void intialTable() {
-    conn = new DBConnection().connection();
+  public void initTable() {
+    conn = new DBConnection().getConnection();
     tc_serial_number.setCellValueFactory(
         d -> new ReadOnlyObjectWrapper<>(String.valueOf(d.getValue().getBusiness_Day())));
     tc_closed_by.setCellValueFactory(

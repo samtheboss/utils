@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class StockTakingDataHandler {
 
     private static final Logger LOG = Logger.getLogger(StockTakingDataHandler.class.getName());
-    private static Connection conn = new DBConnection().connection();
+    private static Connection conn = new DBConnection().getConnection();
     String query = "";
     int i = 1;
 
@@ -203,7 +203,7 @@ public class StockTakingDataHandler {
 
         PreparedStatement pst = null;
         try {
-            conn = new DBConnection().connection();
+            conn = new DBConnection().getConnection();
             pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
             return rs;

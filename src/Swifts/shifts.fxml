@@ -11,19 +11,23 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="751.0" stylesheets="@../apis/stock/css.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox spacing="5.0">
+      <VBox prefHeight="13.0" prefWidth="751.0">
          <children>
-            <Label minWidth="70.0" prefHeight="26.0" prefWidth="70.0" styleClass="text" text="START DATE" />
-            <DateTimePicker fx:id="startdate" />
-            <Label layoutX="10.0" layoutY="10.0" minWidth="60.0" prefHeight="24.0" prefWidth="56.0" styleClass="text" text="END DATE" />
-            <DateTimePicker fx:id="enddate" layoutX="76.0" layoutY="10.0" />
-            <JFXButton fx:id="btn_createshift" minWidth="100.0" styleClass="btn" text="CREATE SHIFT" />
-            <JFXButton fx:id="btn_close_shift" layoutX="570.0" layoutY="10.0" minWidth="100.0" styleClass="btn" text="CLOSE SHIFT" />
+            <HBox spacing="5.0">
+               <children>
+                  <Label minWidth="70.0" prefHeight="26.0" prefWidth="70.0" styleClass="text" text="START DATE" />
+                  <DateTimePicker fx:id="startdate" />
+                  <Label layoutX="10.0" layoutY="10.0" minWidth="60.0" prefHeight="24.0" prefWidth="56.0" styleClass="text" text="END DATE" />
+                  <DateTimePicker fx:id="enddate" layoutX="76.0" layoutY="10.0" />
+                  <JFXButton fx:id="btn_createshift" minWidth="100.0" styleClass="btn" text="CREATE SHIFT" />
+                  <JFXButton fx:id="btn_close_shift" layoutX="570.0" layoutY="10.0" minWidth="100.0" styleClass="btn" text="CLOSE SHIFT" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
-      </HBox>
+      </VBox>
       <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="tc_shift_number" prefWidth="75.0" text="SHIFT NO" />

@@ -149,7 +149,7 @@ public class BusinessModel {
     }
 
     public static void addToBusinessDays(BusinessModel val, Connection con) {
-        utills u = new utills();
+        utils u = new utils();
         if (val != null && con != null) {
             String addSQL = "INSERT INTO BUSINESS_DAYS (DESCRIPTION, LOCATION, FISCAL_DAY, FISCAL_MONTH, FISCAL_YEAR, STARTED_BY, DATE_STARTED, MODIFIED_BY, DATE_MODIFIED, CLOSED_BY, DATE_CLOSED, STATUS, DAY_TYPE) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

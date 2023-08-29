@@ -121,7 +121,7 @@ public class StockLedgerController implements Initializable {
         search_button.setOnAction(e -> {
             trns = (getSaleTypeList(stocktype_combobox.getValue(), systemModule).length() > 0)
                     ? getSaleTypeList(stocktype_combobox.getValue(), systemModule) : null;
-            orderNumber = Double.valueOf(order_number_textfield.getText());
+            orderNumber = Double.parseDouble(order_number_textfield.getText());
             //	data = StockTakingDataHandler.loadData(trns, orderNumber, null, audited, null, null, 1, null);
             loadTable();
         });
@@ -207,7 +207,6 @@ public class StockLedgerController implements Initializable {
         List<StockLedger> stocksList = new ArrayList<>();
         data.clear();
         table.getItems().clear();
-        stocksList.clear();
 
         try {
             Long numberOfItems = StockTakingDataHandler.getDataCount(

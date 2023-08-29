@@ -9,7 +9,6 @@ import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javafx.geometry.Pos;
 import org.controlsfx.control.Notifications;
@@ -18,7 +17,7 @@ import org.controlsfx.control.Notifications;
  *
  * @author samue
  */
-public class utills {
+public class utils {
 
     public String safeSQL(String str) {
 
@@ -31,7 +30,7 @@ public class utills {
         }
     }
 
-    public void Notifaction(String title, String text, String type) {
+    public void Notification(String title, String text, String type) {
         Notifications note = Notifications.create().title(title).text(text).position(Pos.CENTER);
         if ("error".equals(type)) {
             note.showError();
@@ -40,69 +39,6 @@ public class utills {
         }
 
     }
-
-    public static String genUpdateSQL(Object object, String clauses) throws Exception {
-        if (object == null) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-
-        for (Field f : object.getClass().getDeclaredFields()) {
-            f.setAccessible(true);
-            String col = f.getName();
-            Object val = f.get(object);
-            if (Objects.isNull(val)) {
-                continue;
-            }
-            String str = Objects.toString(val);
-            if (sb.equals("")) {
-            } else {
-                sb.append(", ");
-            }
-            sb.append(col).append(" = ");
-            if (val instanceof String || val instanceof Timestamp) {
-                sb.append("'").append(val).append("'");
-            } else {
-                sb.append(str);
-            }
-        }
-        System.out.println("UPDATE USERS SET " + sb + " WHERE ");
-        return "UPDATE USERS SET " + sb + " WHERE ";
-    }
-
-    public static String generateUpdateSQL(Object model, String tableName) {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("UPDATE ").append(tableName).append(" SET ");
-
-        Field[] fields = model.getClass().getDeclaredFields();
-        boolean isFirst = true;
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            Object fieldValue;
-            try {
-                fieldValue = field.get(model);
-            } catch (IllegalAccessException e) {
-                fieldValue = null;
-            }
-
-            if (fieldValue != null && !fieldValue.toString().isEmpty()) {
-                if (!isFirst) {
-                    sqlBuilder.append(", ");
-                }
-                sqlBuilder.append(fieldName).append(" = '").append(fieldValue).append("'");
-                isFirst = false;
-            }
-        }
-
-        // Assuming 'primaryKeyColumn' is the name of the primary key column in the table
-        // and its value is set in the model object.
-        //  sqlBuilder.append(" WHERE ").append(primaryKeyColumn).append(" = '").append(getPrimaryKeyValue(model, primaryKeyColumn)).append("'");
-        System.out.println(sqlBuilder.toString());
-        return sqlBuilder.toString();
-    }
-
     public static String genUpdateSQL(Object object, List<WhereBy> clauses, String table)  {
         if (object == null) {
             return null;
@@ -132,11 +68,8 @@ public class utills {
                 sb.append(str);
             }
         }
-        StringBuilder sql = new StringBuilder("UPDATE " + table + " SET " + sb);
 
-     sql.append(whereClauses(clauses));
-
-        return sql.toString();
+        return "UPDATE " + table + " SET " + sb + whereClauses(clauses);
     }
 
     public static String generateInsertSQL(Object object, String tableName) {
@@ -172,7 +105,7 @@ public class utills {
 
     private static String getFormattedValue(Object value) {
         if (value instanceof String || value instanceof Timestamp) {
-            return "'" + value.toString() + "'";
+            return "'" + value + "'";
         }
         return value.toString();
     }
